@@ -19,20 +19,3 @@ MySQL、SQL Server和Oracle数据互传模块，使用此模块可以实现MySQL
 ## mykit-db-oracle
 基于Logminer实现Oracle与Oracle数据库之间的数据传输，支持表结构变化的传输
 
-
-# 主要功能
-## mykit-db-common
-提供通用的工具类
-
-## mykit-db-transfer
-详见：[《mykit-db-transfer功能说明》](mykit-db-transfer/README.md)
-
-## mykit-db-oracle
-详见：[《mykit-db-oracle功能说明》](mykit-db-oracle/README.md)
-
-# 扫一扫关注微信公众号
-
-**你在刷抖音，玩游戏的时候，别人都在这里学习，成长，提升，人与人最大的差距其实就是思维。你可能不信，优秀的人，总是在一起。** 
-  
-扫一扫关注冰河技术微信公众号  
-![微信公众号](https://img-blog.csdnimg.cn/20200716220443647.png)  
