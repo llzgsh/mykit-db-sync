@@ -86,9 +86,13 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <!--<mainClass>io.mykit.db.transfer.Main</mainClass>-->
-                            <mainClass>io.mykit.db.oracle.Main</mainClass>
+                            <mainClass>io.mykit.db.transfer.Main</mainClass>
+<!--                            <mainClass>io.mykit.db.oracle.Main</mainClass>-->
                         </manifest>
+                        <manifestEntries>
+                            <Class-Path>lib/ojdbc6-11.2.0.4.jar</Class-Path>
+<!--                            <XXXX>111</XXXX>-->
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

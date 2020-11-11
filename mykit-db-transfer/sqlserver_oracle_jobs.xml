@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <code>4500000001</code>
+    <source>
+        <url>jdbc:sqlserver://4.1.4.72:1433;DatabaseName=CurrentDb</url>
+        <username>sa</username>
+        <password>sz@62123</password>
+        <dbtype>sqlserver</dbtype>
+        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+    </source>
+    <dest>
+        <url>jdbc:oracle:thin:@4.1.15.71:1521/orcl</url>
+        <username>lrwzx</username>
+        <password>lrwzx</password>
+        <dbtype>oracle</dbtype>
+        <driver>oracle.jdbc.driver.OracleDriver</driver>
+    </dest>
+    <jobs>
+        <job>
+            <name>1</name>
+            <!--每隔30秒执行一次-->
+            <cron>0/5 * * * * ?</cron>
+			<replaceSql>select DbName from CurrentDb..t_currentDb</replaceSql>
+            <srcSql>select * from "${dbname}"..t_satellite</srcSql>
+            <srcTableFields>f_id,f_name,f_longtitude,f_remark</srcTableFields>
+            <destTable>t_satellite</destTable>
+            <destTableFields>f_id,f_name,f_longtitude,f_remark</destTableFields>
+            <destTableKey>f_id</destTableKey>
+            <destTableUpdate>f_name,f_longtitude,f_remark</destTableUpdate>
+        </job>
+    </jobs>
+</root>

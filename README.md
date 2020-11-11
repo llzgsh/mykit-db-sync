@@ -1,8 +1,3 @@
-# 作者及联系方式
-作者：冰河  
-微信：sun_shine_lyz  
-QQ：2711098650  
-微信公众号： 冰河技术
 
 # mykit-db-sync
 mykit中分离出的强大数据数据库同步工具——mykit-db-sync  

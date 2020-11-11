@@ -1,0 +1,1 @@
+java -DisDelete=true -jar mykit-db-transfer-1.0.0.jar sqlserver_oracle_jobs.xml 
