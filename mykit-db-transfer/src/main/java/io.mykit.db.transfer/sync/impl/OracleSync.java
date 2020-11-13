@@ -55,7 +55,7 @@ public class OracleSync extends AbstractDBSync implements DBSync {
             srcFields = this.trimArrayItem(srcField.split(MykitDbSyncConstants.FIELD_SPLIT));
         }
         Map<String, String> fieldMapper = this.getFieldsMapper(srcFields, destFields);
-        System.out.println(fieldMapper.toString());
+//        System.out.println(fieldMapper.toString());
         String[] updateFields = jobInfo.getDestTableUpdate().split(MykitDbSyncConstants.FIELD_SPLIT);
         updateFields = this.trimArrayItem(updateFields);
         String destTable = jobInfo.getDestTable();
@@ -70,7 +70,7 @@ public class OracleSync extends AbstractDBSync implements DBSync {
             for(int i = 0; i < updateFields.length - 1; i++){
                 //取得查询的数据
                 String currentColumn = fieldMapper.get(updateFields[i].trim());
-                System.out.println(currentColumn);
+//                System.out.println(currentColumn);
                 Object fieldValue = rs.getObject(currentColumn);
                 if (fieldValue == null){
                     sql.append(updateFields[i] + " = " + fieldValue + ", ");
@@ -95,7 +95,7 @@ public class OracleSync extends AbstractDBSync implements DBSync {
                 if (/*fieldValueStr.contains(MykitDbSyncConstants.DATE_SPLIT)*/fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")){
                     sql.append(updateFields[updateFields.length - 1] + " = to_date('" + fieldValue + "', '"+MykitDbSyncConstants.ORACLE_DATE_FORMAT+"') ");
                 }else if(fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+")){
-                    sql.append(updateFields[updateFields.length - 1] +  " = to_timestamp('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss.ff'), ");
+                    sql.append(updateFields[updateFields.length - 1] +  " = to_timestamp('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss.ff') ");
                 }else{
                     sql.append(updateFields[updateFields.length - 1] + " = '" + fieldValue + "'");
                 }
