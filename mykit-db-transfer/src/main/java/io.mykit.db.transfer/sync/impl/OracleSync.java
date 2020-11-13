@@ -79,6 +79,8 @@ public class OracleSync extends AbstractDBSync implements DBSync {
                     //时间分割符
                     if (/*fieldValueStr.contains(MykitDbSyncConstants.DATE_SPLIT)*/fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")){
                         sql.append(updateFields[i] + " = to_date('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss'), ");
+                    }else if(fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+")){
+                        sql.append(updateFields[i] + " = to_timestamp('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss.ff'), ");
                     }else{
                         sql.append(updateFields[i] + " = '" + fieldValue + "', ");
                     }
@@ -92,12 +94,19 @@ public class OracleSync extends AbstractDBSync implements DBSync {
                 //时间分割符
                 if (/*fieldValueStr.contains(MykitDbSyncConstants.DATE_SPLIT)*/fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")){
                     sql.append(updateFields[updateFields.length - 1] + " = to_date('" + fieldValue + "', '"+MykitDbSyncConstants.ORACLE_DATE_FORMAT+"') ");
+                }else if(fieldValueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+")){
+                    sql.append(updateFields[updateFields.length - 1] +  " = to_timestamp('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss.ff'), ");
                 }else{
                     sql.append(updateFields[updateFields.length - 1] + " = '" + fieldValue + "'");
                 }
             }
             sql.append(", sync_time = to_date('" + syncTime + "', 'yyyy-mm-dd hh24:mi:ss')");
-            sql.append( " where " ).append(destTableKey).append(" = '"+rs.getObject(fieldMapper.get(destTableKey))+"';");
+            sql.append( " where " );
+//            sql.append(destTableKey).append(" = '"+rs.getObject(fieldMapper.get(destTableKey))+"';");
+            String[] keys = destTableKey.split(",");
+            for(int i=0;i<keys.length;i++){
+                sql.append(keys[i]).append("='").append(rs.getObject(fieldMapper.get(keys[i]))).append("' ").append(i<keys.length-1?" and ":";");
+            };
             sql.append("  if sql%notfound then ");
             sql.append(" insert into ").append(destTable).append(" (").append(jobInfo.getDestTableFields()).append(",sync_time").append(") values ( ");
             for (int index = 0; index < destFields.length; index++) {
@@ -108,6 +117,8 @@ public class OracleSync extends AbstractDBSync implements DBSync {
                     String valueStr = value.toString();
                     if (/*valueStr.contains(MykitDbSyncConstants.DATE_SPLIT)*/valueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")){
                         sql.append(" to_date('" + fieldValue + "', '"+MykitDbSyncConstants.ORACLE_DATE_FORMAT+"') ").append(index == (destFields.length - 1) ? "" : ",");
+                    }else if(valueStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d+")){
+                        sql.append(" to_timestamp('" + fieldValue + "', 'yyyy-mm-dd hh24:mi:ss.ff') ").append(index == (destFields.length - 1) ? "" : ",");
                     }else{
                         sql.append("'").append(value).append(index == (destFields.length - 1) ? "'" : "',");
                     }

@@ -56,6 +56,7 @@ public class JobTask extends DbConnection implements Job {
         DBInfo destDb = (DBInfo) data.get(MykitDbSyncConstants.DEST_DB);
         JobInfo jobInfo = (JobInfo) data.get(MykitDbSyncConstants.JOB_INFO);
         String logTitle = (String) data.get(MykitDbSyncConstants.LOG_TITLE);
+        String sql = "";
         try {
             inConn = getConnection(MykitDbSyncConstants.TYPE_SOURCE, srcDb);
             outConn = getConnection(MykitDbSyncConstants.TYPE_DEST, destDb);
@@ -69,7 +70,7 @@ public class JobTask extends DbConnection implements Job {
 
             DBSync dbHelper = DBSyncFactory.create(destDb.getDbtype());
             long start = System.currentTimeMillis();
-            String sql = dbHelper.assembleSQL(jobInfo.getSrcSql(), inConn, jobInfo);
+            sql = dbHelper.assembleSQL(jobInfo.getSrcSql(), inConn, jobInfo);
             this.logger.info("组装SQL耗时: " + (System.currentTimeMillis() - start) + "ms");
             if (sql != null) {
                 this.logger.debug(sql);
@@ -78,6 +79,8 @@ public class JobTask extends DbConnection implements Job {
                 this.logger.info("执行SQL语句耗时: " + (System.currentTimeMillis() - eStart) + "ms");
             }
         } catch (SQLException e) {
+//            System.out.println("sql:"+sql);
+            e.printStackTrace();
             this.logger.error(logTitle + e.getMessage());
             this.logger.error(logTitle + " SQL执行出错，请检查是否存在语法错误");
             throw new MykitDbSyncException(logTitle + e.getMessage());
